@@ -63,7 +63,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Syntax\Syntax.cs" />
     <Compile Include="Syntax\SyntaxElem.cs" />
-    <Compile Include="Tests\AbstractSyntaxTree_Should.cs" />
     <Compile Include="Tests\Automata_Should.cs" />
     <Compile Include="Tests\Syntax_Should.cs" />
   </ItemGroup>
