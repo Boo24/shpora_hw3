@@ -9,14 +9,22 @@ namespace Markdown.Parser
     public class ASTNode
     {
         public List<ASTNode> Childs;
-        public string value;
-        public ASTNode Parent;
+        public string Value { get; }
+        public ASTNode Parent { get; }
+        public SyntaxElem Elem { get; }
         public bool IsLeaf => Childs.Count == 0;
         public ASTNode(string value, ASTNode parent)
         {
-            this.value = value;
+            Value = value;
             Childs = new List<ASTNode>();
             Parent = parent;
+        }
+
+        public ASTNode(ASTNode parent, SyntaxElem elem)
+        {
+            Childs = new List<ASTNode>();
+            Parent = parent;
+            Elem = elem;
         }
     }
 }

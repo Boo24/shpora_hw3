@@ -53,18 +53,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Automata\Automata.cs" />
-    <Compile Include="Automata\GeneralNotation.cs" />
-    <Compile Include="Automata\State.cs" />
-    <Compile Include="Automata\StateType.cs" />
     <Compile Include="Md.cs" />
     <Compile Include="Parser\AbstractSyntaxTree.cs" />
     <Compile Include="Parser\ASTNode.cs" />
+    <Compile Include="Parser\Converter.cs" />
+    <Compile Include="Parser\TagRender.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="StringAnalyzer\FindedPartsInfo.cs" />
+    <Compile Include="StringAnalyzer\MatchInfo.cs" />
+    <Compile Include="StringAnalyzer\StringAnalyzer.cs" />
     <Compile Include="Syntax\Syntax.cs" />
     <Compile Include="Syntax\SyntaxElem.cs" />
-    <Compile Include="Tests\Automata_Should.cs" />
-    <Compile Include="Tests\Syntax_Should.cs" />
+    <Compile Include="Tests\Converter_Should.cs" />
+    <Compile Include="Tests\StringAnalyzer_Should.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

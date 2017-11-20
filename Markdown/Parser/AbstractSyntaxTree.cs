@@ -8,45 +8,40 @@ namespace Markdown.Parser
 {
     public class AbstractSyntaxTree
     {
-        private Syntax syntax;
         public ASTNode Root;
-        public AbstractSyntaxTree(Syntax syntax, List<string> tokens)
+        public AbstractSyntaxTree()=> Root = new ASTNode("Root", null);
+      
+        public void Build(List<FindedPartsInfo> syntaxParts, string str)
         {
-            this.syntax = syntax;
-            Root = new ASTNode("Root", null);
-            Build(tokens);
+            if (syntaxParts.Count == 0)
+            {
+                Root.Childs.Add(new ASTNode(str, Root));
+                return;
+            }
+            var currentNode = Root;
+            var openTags = new Stack<FindedPartsInfo>();
+            syntaxParts.Aggregate(0, (current, part) => HandleAddNewNode(str, current, part, openTags, ref currentNode));
+            currentNode.Childs.Add(new ASTNode(str.Substring(syntaxParts.Last().EndInd+1), currentNode));
         }
 
-        public AbstractSyntaxTree()
+        private int HandleAddNewNode(string str, int lastIndex, FindedPartsInfo part, Stack<FindedPartsInfo> openTags, ref ASTNode currentNode)
         {
-          
-        }
-        private void Build(List<string> tokens)
-        {
-            var currentNode = Root;
-            var openTags = new Stack<SyntaxElem>();
-            foreach (var token in tokens)
+            var value = str.Substring(lastIndex, part.StartInd - lastIndex);
+            lastIndex = part.EndInd + 1;
+            currentNode.Childs.Add(new ASTNode(value, currentNode));
+            if (part.IsOpen)
             {
-                var curSyntaxElem = syntax.GetSyntaxElemWithStart(token);
-                if (curSyntaxElem != null)
-                {
-                    if (openTags.Count == 0 || openTags.Peek().EndSequence != token)
-                    {
-                        openTags.Push(curSyntaxElem);
-                        var newNode = new ASTNode(token, currentNode);
-                        currentNode.Childs.Add(newNode);
-                        currentNode = newNode;
-                    }
-                    else
-                    {
-                        openTags.Pop();
-                        currentNode = currentNode.Parent;
-                    }
-                }
-                else
-                    currentNode.Childs.Add(new ASTNode(token, currentNode));
+                openTags.Push(part);
+                var newNode = new ASTNode(currentNode, part.SyntaxElem);
+                currentNode.Childs.Add(newNode);
+                currentNode = newNode;
             }
-       }
-   
+            else
+            {
+                openTags.Pop();
+                currentNode = currentNode.Parent;
+            }
+            return lastIndex;
+        }
     }
 }
