@@ -9,32 +9,31 @@ namespace Markdown.Parser
     //TODO RV(atolstov) Попробуй сделать Converter чистым, это очень полезно
     public class Converter      //TODO RV(atolstov) 1) Converter должен быть Builder-ом
     {
-        private AbstractSyntaxTree tree;
-        public Converter(AbstractSyntaxTree tree) => //TODO RV(atolstov) 2) принимать в конструкторе Syntax
-            this.tree = tree;
+        private Syntax syntax;
+        public Converter(Syntax syntax) => this.syntax = syntax;
 
-        public string Convert() //TODO RV(atolstov) 3) а в методе конвертации - само дерево
+        public string Convert(AbstractSyntaxTree tree)
         {
             var htmlBuilder = new StringBuilder();
             var curNode = tree.Root;
-            Dfs(htmlBuilder, curNode);
+            Dfs(htmlBuilder, curNode, tree);
             var htmlText = htmlBuilder.ToString();
             return htmlText;
         }
 
-        private void Dfs(StringBuilder builder, ASTNode curNode)
+        private void Dfs(StringBuilder builder, ASTNode curNode, AbstractSyntaxTree tree)
         {
             if (curNode.IsLeaf)
             {
                 builder.Append(curNode.Value);
                 return;
             }
-            if(curNode!=tree.Root)
-                TagRender.Render(builder, curNode.Elem, true);
-            foreach (var child in curNode.Childs)
-                Dfs(builder, child);
             if (curNode != tree.Root)
-                TagRender.Render(builder, curNode.Elem, false);
+                builder.Append(syntax.ConvertStartTag(curNode.Elem));
+            foreach (var child in curNode.Childs)
+                Dfs(builder, child, tree);
+            if (curNode != tree.Root)
+                builder.Append(syntax.ConvertEndTag(curNode.Elem));
         }
     }
 }

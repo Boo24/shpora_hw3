@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Markdown.Parser;
@@ -19,9 +20,10 @@ namespace Markdown.Tests
         [SetUp]
         public void SetUp()
         {
-            syntax = new Syntax();
-            syntax.Register("[^_](_)[^_]", "[^_](_)[^_]", "em");
-            syntax.Register("\\s(__)\\S", "\\S(__)\\s", "strong").With("em");
+            syntax = new Syntax(elem => $"<{elem.NameOfEquivalentConstructionInAnotherSyntax}>",
+                elem => $"</{elem.NameOfEquivalentConstructionInAnotherSyntax}>");
+            syntax.Register(new Regex( "[^_](_)[^_]"),new Regex("[^_](_)[^_]"), "em");
+            syntax.Register(new Regex("\\s(__)\\S"), new Regex("\\S(__)\\s"), "strong").With("em");
             
             analyzer = new StringAnalyzer(syntax);
         }
@@ -34,11 +36,9 @@ namespace Markdown.Tests
         [TestCase("\\_Similar to em))_", "\\_Similar to em))_", TestName = "Text with escape symbol")]
         public void CheckConvertToHtml(string strInMarkdown, string expectedHtmlText)
         {
-            var syntaxParts = analyzer.Analyze(strInMarkdown);
-            var tree = new AbstractSyntaxTree();
-            tree.Build(syntaxParts, strInMarkdown);
-            var converter = new Converter(tree);
-            var actualHtmlText = converter.Convert();
+            var syntaxTree = analyzer.Analyze(strInMarkdown);
+            var converter = new Converter(syntax);
+            var actualHtmlText = converter.Convert(syntaxTree);
             actualHtmlText.ShouldBeEquivalentTo(expectedHtmlText);
         }
     }

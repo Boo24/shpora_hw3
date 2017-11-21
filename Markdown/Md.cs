@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Markdown.Parser;
 using NUnit.Framework;
 
@@ -10,20 +11,19 @@ namespace Markdown
 	    private StringAnalyzer analyzer;
 	    public Md()
 	    {
-	        syntax = new Syntax();
-	        syntax.Register("[^_](_)[^_]", "[^_](_)[^_]", "em");
-	        syntax.Register("\\s(__)\\S", "\\S(__)\\s", "strong").With("em");
-	        analyzer = new StringAnalyzer(syntax);
+	        syntax = new Syntax(elem => $"<{elem.NameOfEquivalentConstructionInAnotherSyntax}>",
+	            elem => $"</{elem.NameOfEquivalentConstructionInAnotherSyntax}>");
+            syntax.Register(new Regex("[^_](_)[^_]"), new Regex("[^_](_)[^_]"), "em");
+	        syntax.Register(new Regex("\\s(__)\\S"), new Regex("\\S(__)\\s"), "strong").With("em");
+            analyzer = new StringAnalyzer(syntax);
         }
 
 	    public string Render(string markdownStr)
 	    {
-	        var syntaxParts = analyzer.Analyze(markdownStr);
-	        var tree = new AbstractSyntaxTree();
-	        tree.Build(syntaxParts, markdownStr);
-	        var converter = new Converter(tree);
-	        return converter.Convert();
-	    }
+            var syntaxTree = analyzer.Analyze(markdownStr);
+            var converter = new Converter(syntax);
+            return converter.Convert(syntaxTree);
+        }
 	}
 
 }

@@ -9,23 +9,20 @@ namespace Markdown
 {
     public class SyntaxElem
     {
-        public string NameOfEquivalentConstructionInHtml { get; }
-        public string StartSequence { get; }
-        public string EndSequence { get; }
+        public string NameOfEquivalentConstructionInAnotherSyntax { get; }
         private readonly Regex startRegex;
         private readonly Regex endRegex;
         public List<string> NestedElems;
-        //TODO RV(atolstov) Ты описываешь абстрактный синтаксис, но завязываешься на nameOfEquivalentConstructionInHtml? Не хорошо
-        //TODO RV(atolstov) Не sequence, а Regexp. Можешь прямо в конструктор принимать не строку Regexp
-        //TODO RV(atolstov) Для того чтобы описать билдер абстрактных деревьев стоит принимать (помимо паттерна начала/конца) саму строку начала конца (чтобы знать, как восстановить строку из дерева)
-        public SyntaxElem(string startSequence, string endSequence, string nameOfEquivalentConstructionInHtml) 
+        //TODO RV(atolstov) Для того чтобы описать билдер абстрактных деревьев стоит принимать 
+        //TODO(помимо паттерна начала/конца) саму строку начала конца (чтобы знать, как восстановить строку из дерева)
+        public SyntaxElem(Regex startRegex, Regex endRegex, string nameOfEquivalentConstructionInAnotherSyntax)
         {
-            StartSequence = startSequence;
-            EndSequence = endSequence;
-            startRegex = new Regex("^"+startSequence);  //TODO RV(atolstov) WTF? Этой логики не должно быть здесь
-            endRegex = new Regex(endSequence);
+            this.startRegex = new Regex("^"+startRegex.ToString()); //Не очень понимаю, где должна быть описана эта логика,
+            //потому что я это делаю для того, чтоб искать совпадение именно в начале анализируемого фрагмента
+            //для корректного парсинга всех вложенных конструкций.
+            this.endRegex = endRegex;
             NestedElems = new List<string>();
-            NameOfEquivalentConstructionInHtml = nameOfEquivalentConstructionInHtml;
+            NameOfEquivalentConstructionInAnotherSyntax = nameOfEquivalentConstructionInAnotherSyntax;
         }
 
         public SyntaxElem With(string nestedName)
@@ -34,12 +31,13 @@ namespace Markdown
             return this;
         }
 
-        public MatchInfo CheckMatchWithElem(string str)
+        public MatchInfo CheckMatchWithElem(string str, int shift)
         {
-            var startSeqPosition = startRegex.Match(str);
+            var partToAnalyze = str.Substring(shift);
+            var startSeqPosition = startRegex.Match(partToAnalyze);
             if (!startSeqPosition.Success) return new MatchInfo(false);
             var indOfLastSymOfStart = startSeqPosition.Groups[1].Index + startSeqPosition.Groups[1].Length;
-            var endInd = endRegex.Match(str, indOfLastSymOfStart);
+            var endInd = endRegex.Match(partToAnalyze, indOfLastSymOfStart);
             if (!endInd.Success) return new MatchInfo(false);
             var indOfLastSymOfEnd = endInd.Groups[1].Length + endInd.Groups[1].Index;
             return new MatchInfo(true,
