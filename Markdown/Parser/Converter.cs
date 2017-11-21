@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Markdown.Parser
 {
-    public class Converter
+    //TODO RV(atolstov) Попробуй сделать Converter чистым, это очень полезно
+    public class Converter      //TODO RV(atolstov) 1) Converter должен быть Builder-ом
     {
         private AbstractSyntaxTree tree;
-        public Converter(AbstractSyntaxTree tree) =>
+        public Converter(AbstractSyntaxTree tree) => //TODO RV(atolstov) 2) принимать в конструкторе Syntax
             this.tree = tree;
 
-        public string Convert()
+        public string Convert() //TODO RV(atolstov) 3) а в методе конвертации - само дерево
         {
             var htmlBuilder = new StringBuilder();
             var curNode = tree.Root;

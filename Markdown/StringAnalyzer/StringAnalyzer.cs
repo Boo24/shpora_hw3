@@ -11,16 +11,16 @@ namespace Markdown
         private readonly Syntax syntax;
 
         public StringAnalyzer(Syntax syntax) => this.syntax = syntax;
-        public List<FindedPartsInfo> Analyze(string str)
+        public List<FindedPartsInfo> Analyze(string str)    //TODO RV(atolstov) Почему ты не можешь прямо на ходу формировать дерево (ASTNode), без промежуточных FindedPartsInfo?
         {
             var curIndex = 0;
             var prevIndex = 0;
             var res = new List<FindedPartsInfo>();
-            while (str.Length-1 != curIndex)
+            while (str.Length-1 != curIndex)  //TODO RV(atolstov) curIndex < str.Length
             {
                 foreach (var syntaxElem in syntax.SyntaxElems)
                 {
-                    var matchInfo = syntaxElem.CheckMatchWithElem(str.Substring(curIndex));
+                    var matchInfo = syntaxElem.CheckMatchWithElem(str.Substring(curIndex)); //TODO RV(atolstov) регэкспы умеют матч с определенного индекса
                     if (!matchInfo.IsMatch) continue;
                     HandleMatch(str, matchInfo, curIndex, syntaxElem, res);
                     curIndex = matchInfo.EndIndex.Item2+curIndex;

@@ -19,7 +19,7 @@ namespace Markdown.Parser
                 return;
             }
             var currentNode = Root;
-            var openTags = new Stack<FindedPartsInfo>();
+            var openTags = new Stack<FindedPartsInfo>();    //TODO RV(atolstov) ПОЧЕМУ ЭТА ЛОГИКА НЕ В STRING ANALAYZER?!
             syntaxParts.Aggregate(0, (current, part) => HandleAddNewNode(str, current, part, openTags, ref currentNode));
             currentNode.Childs.Add(new ASTNode(str.Substring(syntaxParts.Last().EndInd+1), currentNode));
         }

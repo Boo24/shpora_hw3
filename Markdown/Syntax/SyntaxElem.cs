@@ -15,11 +15,14 @@ namespace Markdown
         private readonly Regex startRegex;
         private readonly Regex endRegex;
         public List<string> NestedElems;
-        public SyntaxElem(string startSequence, string endSequence, string nameOfEquivalentConstructionInHtml)
+        //TODO RV(atolstov) Ты описываешь абстрактный синтаксис, но завязываешься на nameOfEquivalentConstructionInHtml? Не хорошо
+        //TODO RV(atolstov) Не sequence, а Regexp. Можешь прямо в конструктор принимать не строку Regexp
+        //TODO RV(atolstov) Для того чтобы описать билдер абстрактных деревьев стоит принимать (помимо паттерна начала/конца) саму строку начала конца (чтобы знать, как восстановить строку из дерева)
+        public SyntaxElem(string startSequence, string endSequence, string nameOfEquivalentConstructionInHtml) 
         {
             StartSequence = startSequence;
             EndSequence = endSequence;
-            startRegex = new Regex("^"+startSequence);
+            startRegex = new Regex("^"+startSequence);  //TODO RV(atolstov) WTF? Этой логики не должно быть здесь
             endRegex = new Regex(endSequence);
             NestedElems = new List<string>();
             NameOfEquivalentConstructionInHtml = nameOfEquivalentConstructionInHtml;
