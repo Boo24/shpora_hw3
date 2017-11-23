@@ -25,7 +25,8 @@ namespace Markdown
             syntaxElems[name] = syntaxElem;
             return syntaxElem;
         }
-        public SyntaxElem GetSyntaxElemByName(string name) => syntaxElems.ContainsKey(name) ? syntaxElems[name] : null;
+
+        public SyntaxElem this[string elemName] => syntaxElems.ContainsKey(elemName) ? syntaxElems[elemName] : null;
         public IEnumerable<SyntaxElem> GetSyntaxElements() => syntaxElems.Values;
     }
 }

@@ -21,8 +21,8 @@ namespace Markdown
 	    public string Render(string markdownStr)
 	    {
             var syntaxTree = analyzer.Analyze(markdownStr);
-            var converter = new Converter(syntax);
-            return converter.Convert(syntaxTree);
+            var converter = new SyntaxStringBuilder(syntax);
+            return converter.Build(syntaxTree);
         }
 	}
 

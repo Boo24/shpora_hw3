@@ -11,7 +11,7 @@ using NUnit.Framework.Internal;
 
 namespace Markdown.Tests
 {
-    [TestFixture()]
+    [TestFixture]
     class StringAnalyzer_Should
     {
         private Syntax syntax;
@@ -33,7 +33,7 @@ namespace Markdown.Tests
             var actualSytaxTree = strAnalyzer.Analyze(markdownStr);
             var expectedSyntaxTree = new AbstractSyntaxTree();
             expectedSyntaxTree.AddNotTerminalNode(" ");
-            expectedSyntaxTree.AddTerminalNode(syntax.GetSyntaxElemByName("em"));
+            expectedSyntaxTree.AddTerminalNode(syntax["em"]);
             expectedSyntaxTree.AddNotTerminalNode("Em Here");
             expectedSyntaxTree.UpToParent();
             expectedSyntaxTree.AddNotTerminalNode(" ");
@@ -59,7 +59,7 @@ namespace Markdown.Tests
             var actualSytaxTree = strAnalyzer.Analyze(markdownStr);
             var expectedSyntaxTree = new AbstractSyntaxTree();
             expectedSyntaxTree.AddNotTerminalNode(" ");
-            expectedSyntaxTree.AddTerminalNode(syntax.GetSyntaxElemByName("strong"));
+            expectedSyntaxTree.AddTerminalNode(syntax["strong"]);
             expectedSyntaxTree.AddNotTerminalNode("It's text with strong");
             expectedSyntaxTree.UpToParent();
             expectedSyntaxTree.AddNotTerminalNode(" ");
@@ -74,9 +74,9 @@ namespace Markdown.Tests
             var actualSytaxTree = strAnalyzer.Analyze(markdownStr);
             var expectedSyntaxTree = new AbstractSyntaxTree();
             expectedSyntaxTree.AddNotTerminalNode(" ");
-            expectedSyntaxTree.AddTerminalNode(syntax.GetSyntaxElemByName("strong"));
+            expectedSyntaxTree.AddTerminalNode(syntax["strong"]);
             expectedSyntaxTree.AddNotTerminalNode("strong ");
-            expectedSyntaxTree.AddTerminalNode(syntax.GetSyntaxElemByName("em"));
+            expectedSyntaxTree.AddTerminalNode(syntax["em"]);
             expectedSyntaxTree.AddNotTerminalNode("em!");
             expectedSyntaxTree.UpToParent();
             expectedSyntaxTree.AddNotTerminalNode(" ))");
@@ -93,7 +93,7 @@ namespace Markdown.Tests
             var actualSytaxTree = strAnalyzer.Analyze(markdownStr);
             var expectedSyntaxTree = new AbstractSyntaxTree();
             expectedSyntaxTree.AddNotTerminalNode(" ");
-            expectedSyntaxTree.AddTerminalNode(syntax.GetSyntaxElemByName("em"));
+            expectedSyntaxTree.AddTerminalNode(syntax["em"]);
             expectedSyntaxTree.AddNotTerminalNode("em __strong__ h");
             expectedSyntaxTree.UpToParent();
             expectedSyntaxTree.AddNotTerminalNode(" ");

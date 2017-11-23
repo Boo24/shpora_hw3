@@ -56,14 +56,14 @@
     <Compile Include="Md.cs" />
     <Compile Include="Parser\AbstractSyntaxTree.cs" />
     <Compile Include="Parser\ASTNode.cs" />
-    <Compile Include="Parser\Converter.cs" />
+    <Compile Include="Parser\SyntaxStringBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="StringAnalyzer\FindedPartsInfo.cs" />
     <Compile Include="StringAnalyzer\MatchInfo.cs" />
     <Compile Include="StringAnalyzer\StringAnalyzer.cs" />
     <Compile Include="Syntax\Syntax.cs" />
     <Compile Include="Syntax\SyntaxElem.cs" />
-    <Compile Include="Tests\Converter_Should.cs" />
+    <Compile Include="Tests\SyntaxStringBuilder_Should.cs" />
     <Compile Include="Tests\StringAnalyzer_Should.cs" />
   </ItemGroup>
   <ItemGroup>

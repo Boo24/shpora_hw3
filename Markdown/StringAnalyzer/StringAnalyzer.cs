@@ -64,7 +64,7 @@ namespace Markdown
             foreach (var nestedElem in elem.NestedElems)
             {
                 var ind = 0;
-                var currentSyntaxElem = syntax.GetSyntaxElemByName(nestedElem);
+                var currentSyntaxElem = syntax[nestedElem];
                 var matchInfo = currentSyntaxElem.CheckMatchWithElem(str, 0);
                 while (!matchInfo.IsMatch && ind < str.Length)
                 {

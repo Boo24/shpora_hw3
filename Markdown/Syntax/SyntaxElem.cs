@@ -13,8 +13,6 @@ namespace Markdown
         private readonly Regex startRegex;
         private readonly Regex endRegex;
         public List<string> NestedElems;
-        //TODO RV(atolstov) Для того чтобы описать билдер абстрактных деревьев стоит принимать 
-        //TODO(помимо паттерна начала/конца) саму строку начала конца (чтобы знать, как восстановить строку из дерева)
         public SyntaxElem(Regex startRegex, Regex endRegex, string nameOfEquivalentConstructionInAnotherSyntax)
         {
             this.startRegex = new Regex("^"+startRegex.ToString()); //Не очень понимаю, где должна быть описана эта логика,

@@ -12,7 +12,7 @@ using NUnit.Framework.Internal;
 namespace Markdown.Tests
 {
     [TestFixture]
-    class Converter_Should
+    class SyntaxStringBuilder_Should
     {
         private Syntax syntax;
         private StringAnalyzer analyzer;
@@ -37,8 +37,8 @@ namespace Markdown.Tests
         public void CheckConvertToHtml(string strInMarkdown, string expectedHtmlText)
         {
             var syntaxTree = analyzer.Analyze(strInMarkdown);
-            var converter = new Converter(syntax);
-            var actualHtmlText = converter.Convert(syntaxTree);
+            var converter = new SyntaxStringBuilder(syntax);
+            var actualHtmlText = converter.Build(syntaxTree);
             actualHtmlText.ShouldBeEquivalentTo(expectedHtmlText);
         }
     }
