@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace Markdown.Parser
 {
-    public class AbstractSyntaxTree
+    public class StringAnalyzerState
     {
-        public ASTNode Root;
+        public ASTNode Tree;
         private ASTNode currentNode;
-
-        public AbstractSyntaxTree()
+        private string sourceString;
+        public int lastIndex = 0 ;
+        public StringAnalyzerState(string sourceString)
         {
-            Root = new ASTNode("Root", null);
-            currentNode = Root;
+            Tree = new ASTNode("Tree", null);
+            currentNode = Tree;
+            this.sourceString = sourceString;
         }
         public void AddTerminalNode(SyntaxElem elem)
         {
@@ -22,8 +24,10 @@ namespace Markdown.Parser
             currentNode.Childs.Add(newNode);
             currentNode = newNode;
         }
-
         public void UpToParent() => currentNode = currentNode.Parent;
-        public void AddNotTerminalNode(string str) => currentNode.Childs.Add(new ASTNode(str, currentNode));
+        public void AddNotTerminalNode(int len) =>
+            currentNode.Childs.Add(new ASTNode(sourceString.Substring(lastIndex, len), currentNode));
+        
+
     }
 }

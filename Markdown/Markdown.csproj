@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Md.cs" />
-    <Compile Include="Parser\AbstractSyntaxTree.cs" />
+    <Compile Include="Parser\StringAnalyzerState.cs" />
     <Compile Include="Parser\ASTNode.cs" />
     <Compile Include="Parser\SyntaxStringBuilder.cs" />
     <Compile Include="Program.cs" />

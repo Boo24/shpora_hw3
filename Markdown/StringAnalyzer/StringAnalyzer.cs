@@ -15,15 +15,12 @@ namespace Markdown
     public class StringAnalyzer
     {
         private readonly Syntax syntax;
-        private int lastIndex = 0;
-        private string originalString;
         public StringAnalyzer(Syntax syntax) => this.syntax = syntax;
-        public AbstractSyntaxTree Analyze(string str) 
+        public StringAnalyzerState Analyze(string str)
         {
-            originalString = str;
             var curIndex = 0;
             var prevIndex = 0;
-            var abstractSyntaxTree = new AbstractSyntaxTree();
+            var abstractSyntaxTree = new StringAnalyzerState(str);
             while (curIndex < str.Length)  
             {
                 foreach (var syntaxElem in syntax.GetSyntaxElements())
@@ -39,27 +36,27 @@ namespace Markdown
                 curIndex += 1;
                 prevIndex += 1;
             }
-            abstractSyntaxTree.AddNotTerminalNode(originalString.Substring(lastIndex));
+            abstractSyntaxTree.AddNotTerminalNode(str.Length-abstractSyntaxTree.lastIndex);
             return abstractSyntaxTree;
         }
 
-        private void HandleMatch(string str, MatchInfo matchInfo, int shift, SyntaxElem syntaxElem, AbstractSyntaxTree tree)
+        private void HandleMatch(string str, MatchInfo matchInfo, int shift, SyntaxElem syntaxElem, StringAnalyzerState tree)
         {
-            tree.AddNotTerminalNode(originalString.Substring(lastIndex, shift+ matchInfo.StartIndex.Item1-lastIndex));
-            lastIndex = matchInfo.StartIndex.Item2 + 1+shift;
+            tree.AddNotTerminalNode(shift+matchInfo.StartIndex.Item1-tree.lastIndex);
+            tree.lastIndex = matchInfo.StartIndex.Item2 + 1 + shift;
             tree.AddTerminalNode(syntaxElem);
             var indOfStartOfNestedConstruction = matchInfo.StartIndex.Item2 + 1 + shift;
             var lenOfNestedConstruction = matchInfo.EndIndex.Item1 - matchInfo.StartIndex.Item2 - 1;
             AnalyzeNestedContructions(tree, str.Substring(indOfStartOfNestedConstruction, lenOfNestedConstruction), syntaxElem,
                 indOfStartOfNestedConstruction);
             var indOfLastSymOfEnd = matchInfo.EndIndex.Item2 + shift;
-            tree.AddNotTerminalNode(originalString.Substring(lastIndex,  shift+matchInfo.EndIndex.Item1 - lastIndex));
-            lastIndex = indOfLastSymOfEnd + 1;
+            tree.AddNotTerminalNode(shift+matchInfo.EndIndex.Item1 - tree.lastIndex);
+            tree.lastIndex = indOfLastSymOfEnd + 1;
             tree.UpToParent();
         }
 
 
-        private void AnalyzeNestedContructions(AbstractSyntaxTree tree, string str, SyntaxElem elem, int shift=0)
+        private void AnalyzeNestedContructions(StringAnalyzerState tree, string str, SyntaxElem elem, int shift=0)
         {
             foreach (var nestedElem in elem.NestedElems)
             {
