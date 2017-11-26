@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Markdown
 {
+    //TODO RV(atolstov): что за артефакт :)?
     public class FindedPartsInfo
     {
         public int StartInd;

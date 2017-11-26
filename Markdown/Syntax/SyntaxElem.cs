@@ -13,11 +13,14 @@ namespace Markdown
         private readonly Regex startRegex;
         private readonly Regex endRegex;
         public List<string> NestedElems;
-        public SyntaxElem(Regex startRegex, Regex endRegex, string nameOfEquivalentConstructionInAnotherSyntax)
+        public SyntaxElem(Regex startRegex, Regex endRegex, string nameOfEquivalentConstructionInAnotherSyntax) //TODO RV(atolsotv): nameOfEquivalentConstructionInAnotherSyntax - ужасно :). Хватило бы просто name
         {
             this.startRegex = new Regex("^"+startRegex.ToString()); //Не очень понимаю, где должна быть описана эта логика,
             //потому что я это делаю для того, чтоб искать совпадение именно в начале анализируемого фрагмента
             //для корректного парсинга всех вложенных конструкций.
+            //TODO RV(atolstov):             syntax.Register(new Regex("^[^_](_)[^_]"), new Regex("[^_](_)[^_]"), "em");
+            // Она должна быть в месте регистрации, так как может существовать тег не обязательно идущий в начале, или с более сложно логикой:
+            //      (?<=\s|^|#)[ ...
             this.endRegex = endRegex;
             NestedElems = new List<string>();
             NameOfEquivalentConstructionInAnotherSyntax = nameOfEquivalentConstructionInAnotherSyntax;

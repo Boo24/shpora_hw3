@@ -41,5 +41,13 @@ namespace Markdown.Tests
             var actualHtmlText = converter.Build(syntaxTree);
             actualHtmlText.ShouldBeEquivalentTo(expectedHtmlText);
         }
+        //TODO RV(atolstov): почему не используешь такой синтаксис TestCase-ов?
+        //[TestCase("\\_Similar to em))_", ExpectedResult = "\\_Similar to em))_", TestName = "Text with escape symbol")]
+        //public string CheckConvertToHtml(string strInMarkdown)
+        //{
+        //    var syntaxTree = analyzer.Analyze(strInMarkdown);
+        //    var converter = new SyntaxStringBuilder(syntax);
+        //    return converter.Build(syntaxTree);
+        //}
     }
 }
