@@ -13,11 +13,11 @@ namespace Markdown.Parser
 
         public string Build(StringAnalyzerState tree)
         {
-            var htmlBuilder = new StringBuilder();  //TODO RV(atolstov): почему htmlBuilder? Это билдер подходит для любого синтаксиса
+            var targetSrtingBuiler = new StringBuilder();  //TODO RV(atolstov): почему htmlBuilder? Это билдер подходит для любого синтаксиса
             var curNode = tree.Tree;
-            Dfs(htmlBuilder, curNode, tree);
-            var htmlText = htmlBuilder.ToString();
-            return htmlText;
+            Dfs(targetSrtingBuiler, curNode, tree);
+            var targetText = targetSrtingBuiler.ToString();
+            return targetText;
         }
 
         private void Dfs(StringBuilder builder, ASTNode curNode, StringAnalyzerState tree)

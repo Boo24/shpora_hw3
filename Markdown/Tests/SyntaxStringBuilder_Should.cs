@@ -28,26 +28,17 @@ namespace Markdown.Tests
             analyzer = new StringAnalyzer(syntax);
         }
 
-        [TestCase(" _em_ ", " <em>em</em> ", TestName = "Only em construction")]
-        [TestCase("Text without tags", "Text without tags", TestName = "Text without tags")]
-        [TestCase(" __Strong__ ", " <strong>Strong</strong> ", TestName = "Only strong construction")]
-        [TestCase(" _em __strong__ _ ", " <em>em __strong__ </em> ", TestName = "Strong in em construction")]
-        [TestCase(" __em _in_ strong__ ", " <strong>em <em>in</em> strong</strong> ", TestName = "Em in strong construction")]
-        [TestCase("\\_Similar to em))_", "\\_Similar to em))_", TestName = "Text with escape symbol")]
-        public void CheckConvertToHtml(string strInMarkdown, string expectedHtmlText)
+        [TestCase(" _em_ ", ExpectedResult = " <em>em</em> ", TestName = "Only em construction")]
+        [TestCase("Text without tags", ExpectedResult = "Text without tags", TestName = "Text without tags")]
+        [TestCase(" __Strong__ ", ExpectedResult = " <strong>Strong</strong> ", TestName = "Only strong construction")]
+        [TestCase(" _em __strong__ _ ", ExpectedResult = " <em>em __strong__ </em> ", TestName = "Strong in em construction")]
+        [TestCase(" __em _in_ strong__ ", ExpectedResult = " <strong>em <em>in</em> strong</strong> ", TestName = "Em in strong construction")]
+        [TestCase("\\_Similar to em))_", ExpectedResult = "\\_Similar to em))_", TestName = "Text with escape symbol")]
+        public string CheckConvertToHtml(string strInMarkdown)
         {
             var syntaxTree = analyzer.Analyze(strInMarkdown);
             var converter = new SyntaxStringBuilder(syntax);
-            var actualHtmlText = converter.Build(syntaxTree);
-            actualHtmlText.ShouldBeEquivalentTo(expectedHtmlText);
+            return converter.Build(syntaxTree);
         }
-        //TODO RV(atolstov): почему не используешь такой синтаксис TestCase-ов?
-        //[TestCase("\\_Similar to em))_", ExpectedResult = "\\_Similar to em))_", TestName = "Text with escape symbol")]
-        //public string CheckConvertToHtml(string strInMarkdown)
-        //{
-        //    var syntaxTree = analyzer.Analyze(strInMarkdown);
-        //    var converter = new SyntaxStringBuilder(syntax);
-        //    return converter.Build(syntaxTree);
-        //}
     }
 }

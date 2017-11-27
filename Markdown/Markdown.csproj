@@ -58,7 +58,6 @@
     <Compile Include="Parser\ASTNode.cs" />
     <Compile Include="Parser\SyntaxStringBuilder.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="StringAnalyzer\FindedPartsInfo.cs" />
     <Compile Include="StringAnalyzer\MatchInfo.cs" />
     <Compile Include="StringAnalyzer\StringAnalyzer.cs" />
     <Compile Include="Syntax\Syntax.cs" />
